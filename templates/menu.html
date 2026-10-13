@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Canteen Menu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}?v=8">
+</head>
+
+<body class="menu-body">
+
+<div class="container menu-page-container">
+
+    <header>
+        <div>
+            <h1>🍴 Canteen Menu</h1>
+            <p style="color: #e5def3; margin: 4px 0 0 0;">Browse fresh food and order directly</p>
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <a href="/canteen" class="btn secondary">🏠 Home</a>
+            <a href="/cart" class="cart-button" id="headerCartBtn">
+                🛒 View Cart (<span id="headerCartCount">{{ cart_count }}</span>)
+            </a>
+        </div>
+    </header>
+
+    <!-- SEARCH & CATEGORY FILTER -->
+    <div class="search-section">
+        <div class="search-bar-wrapper">
+            <span class="search-icon">🔍</span>
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="search-input" 
+                placeholder="Search food items (e.g., Chicken Rice, Parota, Tea)..." 
+                oninput="filterProducts()">
+        </div>
+
+        <div class="category-filters" id="categoryFilterContainer">
+            <span>Filter:</span>
+            <button class="filter-btn active" data-cat="All" onclick="selectCategory('All', this)">All Items</button>
+            {% set seen_cats = [] %}
+            {% for product in products %}
+                {% if product.category and product.category not in seen_cats %}
+                    {% set _ = seen_cats.append(product.category) %}
+                    <button class="filter-btn" data-cat="{{ product.category }}" onclick="selectCategory('{{ product.category }}', this)">
+                        {{ product.category }}
+                    </button>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- PRODUCTS GRID -->
+    <div class="products" id="productsGrid">
+
+        {% for product in products %}
+        <div class="product-card" 
+             id="productCard{{ product.id }}"
+             data-id="{{ product.id }}"
+             data-name="{{ product.name|lower }}" 
+             data-category="{{ product.category|lower }}">
+
+            <h3 class="product-title">{{ product.name }}</h3>
+
+            <p class="category">{{ product.category }}</p>
+
+            <h2 class="product-price">₹{{ "%.2f"|format(product.price) }}</h2>
+
+            {% if product.stock > 0 %}
+            <p class="stock-info">Stock: {{ product.stock }}</p>
+
+            <button onclick="addToCart({{ product.id }}, this, event)" class="btn add-cart-btn" id="addBtn{{ product.id }}">
+                Add to Cart
+            </button>
+            {% else %}
+            <p class="out">OUT OF STOCK</p>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+
+        <div id="noMatchMessage" class="empty-menu">
+            <h3>🍽 No menu items match your search</h3>
+            <p>Try searching with another keyword or selecting a different category.</p>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- BOTTOM DOCKED CART BAR -->
+<div id="bottomCartBar" class="bottom-cart-bar">
+    <div class="bottom-cart-inner">
+        <div class="bottom-cart-tray-info">
+            <div class="bottom-cart-bubble" id="bottomCartIcon">
+                🛒
+                <span id="bottomCartCountBadge" class="bottom-cart-count-badge">{{ cart_count }}</span>
+            </div>
+            <div class="bottom-cart-text-group">
+                <span class="bottom-cart-heading">Your Cart Tray</span>
+                <span id="bottomCartSummaryText" class="bottom-cart-subtext">
+                    {{ cart_count }} item{% if cart_count != 1 %}s{% endif %} in tray
+                </span>
+            </div>
+        </div>
+        <a href="/cart" id="bottomCartBtn" class="btn bottom-cart-action-btn">
+            <span>View Cart & Bill</span>
+            <span class="cart-arrow">➔</span>
+        </a>
+    </div>
+</div>
+
+<!-- FLOATING TOAST NOTIFICATION CONTAINER -->
+<div id="toastContainer" class="toast-container"></div>
+
+<script src="{{ url_for('static', path='script.js') }}?v=8"></script>
+
+<script>
+let currentCategory = "All";
+
+function selectCategory(category, buttonElement) {
+    currentCategory = category;
+    
+    // Update active tab button style
+    document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+    buttonElement.classList.add("active");
+    
+    filterProducts();
+}
+
+function filterProducts() {
+    const query = document.getElementById("searchInput").value.trim().toLowerCase();
+    const cards = document.querySelectorAll(".product-card");
+    const noMatch = document.getElementById("noMatchMessage");
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const name = card.getAttribute("data-name") || "";
+        const category = card.getAttribute("data-category") || "";
+
+        const matchesQuery = query === "" || name.includes(query) || category.includes(query);
+        const matchesCategory = (currentCategory === "All") || (category === currentCategory.toLowerCase());
+
+        if (matchesQuery && matchesCategory) {
+            card.style.display = "block";
+            visibleCount++;
+        } else {
+            card.style.display = "none";
+        }
+    });
+
+    if (visibleCount === 0 && cards.length > 0) {
+        noMatch.style.display = "block";
+    } else {
+        noMatch.style.display = "none";
+    }
+}
+</script>
+
+</body>
+</html>

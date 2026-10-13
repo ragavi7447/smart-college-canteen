@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Shopping Cart</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet"
+          href="/static/style.css?v=8">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🛒 Cart</h1>
+
+    {% if products %}
+
+    <form method="POST"
+          action="/update_cart">
+
+        {% for product in products %}
+
+        <div class="cart-item">
+
+            <div>
+
+                <h3>
+                    {{ product.name }}
+                </h3>
+
+                <p>
+                    ₹{{ "%.2f"|format(product.price) }}
+                    each
+                </p>
+
+            </div>
+
+            <input
+                type="hidden"
+                name="product_id[]"
+                value="{{ product.id }}">
+
+            <input
+                type="number"
+                name="quantity[]"
+                value="{{ product.quantity }}"
+                min="1"
+                max="{{ product.stock }}"
+                class="quantity">
+
+            <strong>
+                ₹{{ "%.2f"|format(product.amount) }}
+            </strong>
+
+            <a
+                href="/remove_from_cart/{{ product.id }}"
+                class="remove">
+
+                Remove
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+        <button class="btn">
+            Update Cart
+        </button>
+
+    </form>
+
+    <div class="total-box">
+
+        Total:
+        ₹{{ "%.2f"|format(total) }}
+
+    </div>
+
+    <a href="/checkout"
+       class="btn success">
+
+        Proceed to Checkout
+
+    </a>
+
+    <a href="/menu"
+       class="btn secondary">
+
+        Continue Shopping
+
+    </a>
+
+    <a href="/clear_cart"
+       class="btn danger">
+
+        Clear Cart
+
+    </a>
+
+    {% else %}
+
+    <h2>Your cart is empty.</h2>
+
+    <a href="/menu"
+       class="btn">
+
+        Go to Menu
+
+    </a>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

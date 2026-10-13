@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bill - {{ order.bill_no }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}?v=8">
+</head>
+
+<body>
+
+<div class="receipt">
+
+    <div class="center">
+        <h1>SMART CANTEEN</h1>
+        <p>COLLEGE CANTEEN</p>
+        <p>Digital Payment & Billing System</p>
+    </div>
+
+    <hr>
+
+    <div class="bill-meta-box">
+        <p><strong>Bill No:</strong> <span>{{ order.bill_no }}</span></p>
+        <p><strong>Date:</strong> <span>{{ date_str or (order.order_date.split(' ')[0] if order.order_date else '') }}</span></p>
+        <p><strong>Time:</strong> <span>{{ time_str or (order.order_date.split(' ', 1)[1] if order.order_date and ' ' in order.order_date else '') }}</span></p>
+        <p><strong>Customer Name:</strong> <span>{{ order.customer_name }}</span></p>
+    </div>
+
+    <hr>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.product_name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ "%.2f"|format(item.price) }}</td>
+                <td>₹{{ "%.2f"|format(item.amount) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+
+    <div class="receipt-total">
+        TOTAL: ₹{{ "%.2f"|format(order.total) }}
+    </div>
+
+    <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
+    <p><strong>Payment Status:</strong> <span class="paid">{{ order.payment_status }}</span></p>
+
+    {% if order.payment_method == "UPI" %}
+    <div class="center" style="margin: 15px 0;">
+        <img 
+            src="/upi_qr?amount={{ order.total }}&bill_no={{ order.bill_no }}" 
+            alt="UPI Receipt QR" 
+            style="width: 130px; height: 130px; border: 1px solid #ccc; padding: 4px; border-radius: 6px;">
+        <p style="font-size: 11px; color: #555; margin-top: 4px;">Verified UPI Transaction</p>
+    </div>
+    {% endif %}
+
+    <hr>
+
+    <div class="center">
+        <h3>THANK YOU!</h3>
+        <p>Please visit again.</p>
+        <p style="font-size: 11px; color: #777;">📄 Stored in Canteen Documents Folder</p>
+    </div>
+
+    <div class="no-print" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+        <a href="/download_bill_document/{{ order.bill_no }}" class="btn-doc" style="justify-content: center;">
+            📄 Download Receipt Document (.txt)
+        </a>
+
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button onclick="window.print()" class="btn" style="flex: 1;">
+                🖨 Print / PDF
+            </button>
+            <a href="/menu" class="btn secondary" style="flex: 1;">
+                ➕ New Bill
+            </a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

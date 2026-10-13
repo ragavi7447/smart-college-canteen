@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart College Canteen - System Architecture Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #F8FAFC;
+    color: #1E293B;
+    padding: 24px;
+    width: 1720px;
+    min-height: 1180px;
+    margin: 0 auto;
+  }
+  .canvas {
+    background: #FFFFFF;
+    border: 2px solid #E2E8F0;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    position: relative;
+  }
+
+  /* MAIN BANNER HEADER */
+  .main-header {
+    background: linear-gradient(135deg, #0F3E6D 0%, #1E3A8A 100%);
+    color: #FFFFFF;
+    text-align: center;
+    padding: 16px 24px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(15, 62, 109, 0.25);
+    margin-bottom: 20px;
+  }
+  .main-header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .main-header p {
+    font-size: 14px;
+    font-weight: 500;
+    color: #BFDBFE;
+    letter-spacing: 0.02em;
+  }
+
+  /* TOP ROW GRID (5 Columns: Users, Frontend, Backend, Payment, Output) */
+  .top-grid {
+    display: grid;
+    grid-template-columns: 210px 370px 480px 280px 280px;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: stretch;
+  }
+
+  .card {
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 14px 16px;
+    border: 1.5px solid #E2E8F0;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+    position: relative;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+    border-bottom: 1.5px solid #F1F5F9;
+  }
+  .card-header h3 {
+    font-size: 15px;
+    font-weight: 800;
+    margin: 0;
+  }
+  .card-header .icon-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+  }
+
+  /* USERS CARD */
+  .card-users {
+    border-color: #BAE6FD;
+    background: #F0F9FF;
+  }
+  .card-users .card-header {
+    border-color: #BAE6FD;
+  }
+  .card-users .card-header h3 {
+    color: #0369A1;
+  }
+  .card-users .icon-badge {
+    background: #0284C7;
+    color: #FFFFFF;
+  }
+  .user-item {
+    background: #FFFFFF;
+    border: 1px solid #BAE6FD;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 9px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .user-avatar {
+    font-size: 22px;
+  }
+  .user-info h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0C4A6E;
+    margin-bottom: 2px;
+  }
+  .user-info p {
+    font-size: 11px;
+    color: #0284C7;
+    line-height: 1.3;
+  }
+
+  /* FRONTEND CARD */
+  .card-frontend {
+    border-color: #A7F3D0;
+    background: #F0FDF4;
+  }
+  .card-frontend .card-header {
+    border-color: #A7F3D0;
+  }
+  .card-frontend .card-header h3 {
+    color: #047857;
+  }
+  .card-frontend .icon-badge {
+    background: #059669;
+    color: #FFFFFF;
+  }
+  .badge-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .pill-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .pill-orange { background: #FFEDD5; color: #C2410C; border: 1px solid #FDBA74; }
+  .pill-blue   { background: #E0F2FE; color: #0369A1; border: 1px solid #7DD3FC; }
+  .pill-yellow { background: #FEF9C3; color: #A16207; border: 1px solid #FDE047; }
+  .pill-purple { background: #F3E8FF; color: #7E22CE; border: 1px solid #D8B4FE; }
+  .pill-green  { background: #DCFCE7; color: #15803D; border: 1px solid #86EFAC; }
+  .pill-rose   { background: #FFE4E6; color: #BE123C; border: 1px solid #FDA4AF; }
+
+  .ui-features-box {
+    background: #FFFFFF;
+    border: 1px solid #A7F3D0;
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .feature-line {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #065F46;
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px dashed #E2E8F0;
+  }
+  .feature-line:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  /* BACKEND CARD */
+  .card-backend {
+    border-color: #BFDBFE;
+    background: #F8FAFC;
+  }
+  .card-backend .card-header {
+    border-color: #BFDBFE;
+  }
+  .card-backend .card-header h3 {
+    color: #1D4ED8;
+  }
+  .card-backend .icon-badge {
+    background: #2563EB;
+    color: #FFFFFF;
+  }
+  .module-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .module-box {
+    background: #FFFFFF;
+    border: 1px solid #BFDBFE;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #1E40AF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .module-box span.sub {
+    font-size: 11px;
+    font-weight: 500;
+    color: #64748B;
+  }
+
+  /* PAYMENT GATEWAY */
+  .card-payment {
+    border-color: #FECDD3;
+    background: #FFF1F2;
+  }
+  .card-payment .card-header {
+    border-color: #FECDD3;
+  }
+  .card-payment .card-header h3 {
+    color: #BE123C;
+  }
+  .card-payment .icon-badge {
+    background: #E11D48;
+    color: #FFFFFF;
+  }
+  .payment-box {
+    background: #FFFFFF;
+    border: 1px solid #FECDD3;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .payment-apps {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .pay-tag {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .pay-upi { background: #E0E7FF; color: #3730A3; }
+  .pay-gpay { background: #DCFCE7; color: #166534; }
+  .pay-phonepe { background: #F3E8FF; color: #6B21A8; }
+  .pay-paytm { background: #E0F2FE; color: #075985; }
+
+  /* OUTPUT / PRINT CARD */
+  .card-output {
+    border-color: #E9D5FF;
+    background: #FAF5FF;
+  }
+  .card-output .card-header {
+    border-color: #E9D5FF;
+  }
+  .card-output .card-header h3 {
+    color: #7E22CE;
+  }
+  .card-output .icon-badge {
+    background: #9333EA;
+    color: #FFFFFF;
+  }
+  .output-box {
+    background: #FFFFFF;
+    border: 1px solid #E9D5FF;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  /* MIDDLE ROW (Database Schema, SQLite DB, Project Structure, Tech Stack, Key Features) */
+  .middle-grid {
+    display: grid;
+    grid-template-columns: 460px 240px 310px 360px 270px;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  /* DATABASE SCHEMA CARD */
+  .card-schema {
+    border-color: #CBD5E1;
+  }
+  .schema-header {
+    background: #1E3A8A;
+    color: #FFFFFF;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .tables-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .db-table {
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    background: #FFFFFF;
+    overflow: hidden;
+  }
+  .db-table-header {
+    background: #F1F5F9;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 800;
+    color: #0F172A;
+    border-bottom: 1px solid #CBD5E1;
+    display: flex;
+    justify-content: space-between;
+  }
+  .db-table-header .table-tag {
+    font-size: 10px;
+    font-weight: 600;
+    color: #64748B;
+  }
+  .fields-grid {
+    padding: 6px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 8px;
+  }
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #334155;
+  }
+  .key-pk { color: #DC2626; font-weight: 800; font-size: 9px; }
+  .key-fk { color: #2563EB; font-weight: 800; font-size: 9px; }
+
+  /* DATABASE CENTER CYLINDER */
+  .card-database {
+    border-color: #FDE68A;
+    background: #FFFBEB;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .db-cylinder-icon {
+    font-size: 42px;
+    margin-bottom: 6px;
+  }
+  .db-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #92400E;
+    margin-bottom: 4px;
+  }
+  .db-sub {
+    font-size: 11px;
+    font-weight: 600;
+    color: #B45309;
+    margin-bottom: 8px;
+  }
+  .db-desc {
+    font-size: 11px;
+    color: #78350F;
+    background: #FFFFFF;
+    border: 1px solid #FDE68A;
+    border-radius: 8px;
+    padding: 8px;
+    line-height: 1.4;
+  }
+
+  /* FOLDER STRUCTURE */
+  .card-folder {
+    border-color: #C7D2FE;
+    background: #F5F7FF;
+  }
+  .card-folder .card-header h3 { color: #3730A3; }
+  .folder-tree {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #1E1B4B;
+    background: #FFFFFF;
+    border: 1px solid #C7D2FE;
+    border-radius: 8px;
+    padding: 10px;
+    line-height: 1.45;
+  }
+  .folder-name { color: #4338CA; font-weight: 700; }
+  .file-name { color: #475569; }
+
+  /* TECH STACK TABLE */
+  .card-stack {
+    border-color: #CBD5E1;
+    background: #FFFFFF;
+  }
+  .stack-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+  .stack-table th {
+    background: #0F172A;
+    color: #FFFFFF;
+    text-align: left;
+    padding: 6px 8px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .stack-table th:first-child { border-top-left-radius: 6px; }
+  .stack-table th:last-child { border-top-right-radius: 6px; }
+  .stack-table td {
+    padding: 4.5px 8px;
+    border-bottom: 1px solid #F1F5F9;
+    color: #334155;
+  }
+  .stack-table tr:nth-child(even) td { background: #F8FAFC; }
+  .stack-layer { font-weight: 700; color: #1E293B; }
+  .stack-tech { font-weight: 600; color: #0F3E6D; }
+
+  /* KEY FEATURES CARD */
+  .card-features {
+    border-color: #A7F3D0;
+    background: #F0FDF4;
+  }
+  .card-features .card-header h3 { color: #047857; }
+  .feature-item {
+    font-size: 11px;
+    font-weight: 600;
+    color: #064E3B;
+    margin-bottom: 7px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    line-height: 1.35;
+  }
+  .feature-check {
+    color: #059669;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  /* BOTTOM DATA FLOW / PROCESS FLOW (1 to 7 Ribbon) */
+  .flow-card {
+    background: #FFFFFF;
+    border: 1.5px solid #CBD5E1;
+    border-radius: 14px;
+    padding: 16px 20px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+  }
+  .flow-header {
+    background: #0F3E6D;
+    color: #FFFFFF;
+    display: inline-block;
+    padding: 5px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    margin-bottom: 12px;
+  }
+  .flow-steps {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+    position: relative;
+  }
+  .step-box {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .step-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #1E3A8A;
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 6px auto;
+  }
+  .step-icon {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .step-title {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #0F172A;
+    margin-bottom: 3px;
+  }
+  .step-desc {
+    font-size: 10px;
+    color: #64748B;
+    line-height: 1.3;
+  }
+  .step-arrow {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #94A3B8;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<div class="canvas">
+
+  <!-- MAIN HEADER -->
+  <div class="main-header">
+    <h1>Smart College Canteen Management & Billing System</h1>
+    <p>Complete System Architecture & Technical Workflow Design (Light Theme)</p>
+  </div>
+
+  <!-- TOP ROW GRID -->
+  <div class="top-grid">
+
+    <!-- 1. USERS -->
+    <div class="card card-users">
+      <div class="card-header">
+        <div class="icon-badge">👥</div>
+        <h3>System Users</h3>
+      </div>
+      <div class="user-item">
+        <div class="user-avatar">👨‍🎓</div>
+        <div class="user-info">
+          <h4>Student</h4>
+          <p>Browses menu, adds food to cart, checks out, scans UPI QR</p>
+        </div>
+      </div>
+      <div class="user-item">
+        <div class="user-avatar">👨‍🍳</div>
+        <div class="user-info">
+          <h4>Canteen Staff</h4>
+          <p>Views live order queue, prepares meals, prints receipts</p>
+        </div>
+      </div>
+      <div class="user-item" style="margin-bottom: 0;">
+        <div class="user-avatar">⚙️</div>
+        <div class="user-info">
+          <h4>Admin</h4>
+          <p>Inventory stock, adds menu items, exports sales reports</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. FRONTEND -->
+    <div class="card card-frontend">
+      <div class="card-header">
+        <div class="icon-badge">💻</div>
+        <h3>Frontend (Web Interface)</h3>
+      </div>
+      <div class="badge-row">
+        <span class="pill-badge pill-orange">HTML5</span>
+        <span class="pill-badge pill-blue">CSS3</span>
+        <span class="pill-badge pill-yellow">JavaScript (ES6+)</span>
+        <span class="pill-badge pill-purple">Jinja2</span>
+      </div>
+      <div class="ui-features-box">
+        <div class="feature-line">
+          <span>🔍</span> Real-Time Search & Category Filters
+        </div>
+        <div class="feature-line">
+          <span>✨</span> Interactive Pop-up & Fly-to-Cart Animation
+        </div>
+        <div class="feature-line">
+          <span>🛒</span> Bottom Docked Sticky Cart Tray & Live Badge
+        </div>
+        <div class="feature-line">
+          <span>🔐</span> Admin Password Verification Modal Dialog
+        </div>
+        <div class="feature-line">
+          <span>📅</span> Split Date & Time Formatted Receipt View
+        </div>
+        <div class="feature-line">
+          <span>📱</span> Responsive Design (Desktop, Tablet, Mobile)
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. BACKEND (FASTAPI + PYTHON) -->
+    <div class="card card-backend">
+      <div class="card-header">
+        <div class="icon-badge">⚙️</div>
+        <h3>Backend (FastAPI + Python)</h3>
+      </div>
+      <div class="badge-row">
+        <span class="pill-badge pill-green">FastAPI (ASGI)</span>
+        <span class="pill-badge pill-blue">Python 3.10+</span>
+        <span class="pill-badge pill-purple">Uvicorn Server</span>
+        <span class="pill-badge pill-rose">SessionMiddleware</span>
+      </div>
+      <div class="module-list">
+        <div class="module-box">
+          <span>Admin Authentication & Session Guards</span>
+          <span class="sub">/api/verify_admin</span>
+        </div>
+        <div class="module-box">
+          <span>Dynamic Menu & Live Stock Service</span>
+          <span class="sub">/menu</span>
+        </div>
+        <div class="module-box">
+          <span>Session-Isolated Cart Engine</span>
+          <span class="sub">/add_to_cart</span>
+        </div>
+        <div class="module-box">
+          <span>Order & Inventory Deduction Controller</span>
+          <span class="sub">/generate_bill</span>
+        </div>
+        <div class="module-box">
+          <span>Dynamic UPI QR Code Generator</span>
+          <span class="sub">/upi_qr (qrcode + PIL)</span>
+        </div>
+        <div class="module-box">
+          <span>Document Archiver (.txt & .csv)</span>
+          <span class="sub">save_order_documents()</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. PAYMENT GATEWAY -->
+    <div class="card card-payment">
+      <div class="card-header">
+        <div class="icon-badge">💳</div>
+        <h3>Payment Gateway</h3>
+      </div>
+      <div class="payment-box">
+        <p style="font-size: 11px; font-weight: 700; color: #9F1239; margin-bottom: 8px;">
+          UPI / Dynamic QR Code Payment
+        </p>
+        <div class="payment-apps">
+          <span class="pay-tag pay-upi">UPI</span>
+          <span class="pay-tag pay-gpay">GPay</span>
+          <span class="pay-tag pay-phonepe">PhonePe</span>
+          <span class="pay-tag pay-paytm">Paytm</span>
+        </div>
+        <div style="background: #FFF1F2; border: 1px dashed #FDA4AF; border-radius: 6px; padding: 6px; font-size: 11px; color: #881337; text-align: left; line-height: 1.35;">
+          • VPA: <code>collegecanteen@okaxis</code><br>
+          • Encodes exact Bill No & Total (INR)<br>
+          • Instant QR scan on phone screen
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. OUTPUT & DOCUMENTS -->
+    <div class="card card-output">
+      <div class="card-header">
+        <div class="icon-badge">📄</div>
+        <h3>Receipt & Documents</h3>
+      </div>
+      <div class="output-box">
+        <div style="font-size: 12px; font-weight: 700; color: #6B21A8; margin-bottom: 6px;">
+          🖨 Digital & Physical Output
+        </div>
+        <div style="font-size: 11px; color: #581C87; line-height: 1.45;">
+          • <strong>Receipt View</strong> (Split Date & Time)<br>
+          • <strong>Thermal / Browser Print</strong> (`window.print()`)<br>
+          • <strong>.TXT Bill Document</strong> (`documents/bills/`)<br>
+          • <strong>Master CSV Export</strong> (`order_history.csv`)
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MIDDLE ROW GRID -->
+  <div class="middle-grid">
+
+    <!-- 1. DATABASE SCHEMA -->
+    <div class="card card-schema">
+      <div class="schema-header">
+        <span>🗄 Relational Database Schema</span>
+        <span style="font-size: 10px; font-weight: 600; opacity: 0.9;">SQLAlchemy Models</span>
+      </div>
+      <div class="tables-layout">
+        <!-- PRODUCT TABLE -->
+        <div class="db-table">
+          <div class="db-table-header">
+            <span>products</span>
+            <span class="table-tag">Inventory Table</span>
+          </div>
+          <div class="fields-grid">
+            <div class="field"><span class="key-pk">[PK]</span> id: Integer</div>
+            <div class="field">name: String(100)</div>
+            <div class="field">category: String(50)</div>
+            <div class="field">price: Float</div>
+            <div class="field">stock: Integer</div>
+            <div class="field">available: Boolean</div>
+          </div>
+        </div>
+
+        <!-- ORDER TABLE -->
+        <div class="db-table">
+          <div class="db-table-header">
+            <span>orders</span>
+            <span class="table-tag">Billing Header</span>
+          </div>
+          <div class="fields-grid">
+            <div class="field"><span class="key-pk">[PK]</span> id: Integer</div>
+            <div class="field">bill_no: String(50)</div>
+            <div class="field">customer_name: String(100)</div>
+            <div class="field">total: Float</div>
+            <div class="field">payment_method: String</div>
+            <div class="field">payment_status: String</div>
+            <div class="field" style="grid-column: span 2;">order_date: String (Date & Time)</div>
+          </div>
+        </div>
+
+        <!-- ORDER_ITEMS TABLE -->
+        <div class="db-table">
+          <div class="db-table-header">
+            <span>order_items</span>
+            <span class="table-tag">Order Line Items</span>
+          </div>
+          <div class="fields-grid">
+            <div class="field"><span class="key-pk">[PK]</span> id: Integer</div>
+            <div class="field"><span class="key-fk">[FK]</span> order_id: Integer</div>
+            <div class="field">product_name: String</div>
+            <div class="field">quantity: Integer</div>
+            <div class="field">price: Float</div>
+            <div class="field">amount: Float</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. DATABASE REPOSITORY -->
+    <div class="card card-database">
+      <div class="db-cylinder-icon">🗃️</div>
+      <div class="db-title">SQLite Database</div>
+      <div class="db-sub">canteen.db</div>
+      <div class="db-desc">
+        Lightweight serverless SQL engine managed via SQLAlchemy ORM. Stores real-time product stock, order records, and transaction histories.
+      </div>
+    </div>
+
+    <!-- 3. PROJECT FOLDER STRUCTURE -->
+    <div class="card card-folder">
+      <div class="card-header">
+        <div class="icon-badge" style="background: #4F46E5; color: white;">📁</div>
+        <h3>Project Structure</h3>
+      </div>
+      <div class="folder-tree">
+        <span class="folder-name">backend/</span><br>
+        ├── <span class="file-name">canteen.db</span> <span style="color:#64748B;">(SQLite)</span><br>
+        ├── <span class="file-name">main.py</span> <span style="color:#64748B;">(FastAPI App)</span><br>
+        ├── <span class="file-name">models.py</span> <span style="color:#64748B;">(ORM Tables)</span><br>
+        ├── <span class="file-name">database.py</span> <span style="color:#64748B;">(Engine)</span><br>
+        ├── <span class="file-name">seed.py</span> <span style="color:#64748B;">(Default Menu)</span><br>
+        ├── <span class="folder-name">documents/</span><br>
+        │   ├── <span class="folder-name">bills/</span> <span style="color:#64748B;">(.txt Receipts)</span><br>
+        │   └── <span class="file-name">order_history.csv</span><br>
+        ├── <span class="folder-name">templates/</span> <span style="color:#64748B;">(Jinja2)</span><br>
+        │   ├── <span class="file-name">index.html, menu.html</span><br>
+        │   └── <span class="file-name">cart.html, bill.html...</span><br>
+        └── <span class="folder-name">static/</span><br>
+            ├── <span class="file-name">style.css, script.js</span><br>
+            └── <span class="file-name">home_bg.jpg</span>
+      </div>
+    </div>
+
+    <!-- 4. TECH STACK TABLE -->
+    <div class="card card-stack">
+      <div class="card-header" style="border-bottom: 2px solid #0F172A;">
+        <div class="icon-badge" style="background: #0F172A; color: white;">🛠️</div>
+        <h3 style="color: #0F172A;">Technology Stack</h3>
+      </div>
+      <table class="stack-table">
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="stack-layer">OS</td>
+            <td class="stack-tech">Windows 10 / 11</td>
+          </tr>
+          <tr>
+            <td class="stack-layer">Language</td>
+            <td class="stack-tech">Python 3.10+</td>
+          </tr>
+          <tr>
+            <td class="stack-layer">Backend</td>
+            <td class="stack-tech">FastAPI + Uvicorn</td>
+          </tr>
+          <tr>
+            <td class="stack-layer">Frontend</td>
+            <td class="stack-tech">HTML5, CSS3, JS (Vanilla)</td>
+          </tr>
+          <tr>
+            <td class="stack-layer">Templates</td>
+            <td class="stack-tech">Jinja2</td>
+          </tr>
+          <tr>
+            <td class="stack-layer">Database</td>
+            <td class="stack-tech">SQLite (SQLAlchemy ORM)</td>
+          </tr>
+          <tr>
+            <td class="stack-layer">Payments</td>
+            <td class="stack-tech">Dynamic UPI QR Code</td>
+          </tr>
+          <tr>
+            <td class="stack-layer">Sessions</td>
+            <td class="stack-tech">SessionMiddleware</td>
+          </tr>
+          <tr>
+            <td class="stack-layer">Exports</td>
+            <td class="stack-tech">TXT Receipts + CSV Master</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 5. KEY FEATURES -->
+    <div class="card card-features">
+      <div class="card-header">
+        <div class="icon-badge" style="background: #059669; color: white;">🌟</div>
+        <h3>Key Features</h3>
+      </div>
+      <div class="feature-item">
+        <span class="feature-check">✔</span>
+        <span>Real-time Menu Browsing & Live Stock Badges</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-check">✔</span>
+        <span>Interactive Pop-Up & Fly-to-Cart Animation</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-check">✔</span>
+        <span>Sticky Bottom Cart Bar with Live Count Badge</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-check">✔</span>
+        <span>Dynamic UPI QR Code Generation with VPA & Amount</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-check">✔</span>
+        <span>Split Date & Time Details on Generated Bill</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-check">✔</span>
+        <span>Password Protected Admin Dashboard & Orders</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-check">✔</span>
+        <span>Automated Bill Documents (.txt) & CSV Master</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM DATA FLOW / PROCESS FLOW -->
+  <div class="flow-card">
+    <div class="flow-header">DATA FLOW / PROCESS WORKFLOW</div>
+    <div class="flow-steps">
+
+      <!-- STEP 1 -->
+      <div class="step-box">
+        <div class="step-circle">1</div>
+        <div class="step-icon">🍽️</div>
+        <div class="step-title">Browse Menu</div>
+        <div class="step-desc">Student browses items & verifies available stock</div>
+        <span class="step-arrow">➔</span>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-box">
+        <div class="step-circle">2</div>
+        <div class="step-icon">✨</div>
+        <div class="step-title">Add to Cart</div>
+        <div class="step-desc">Pop-up & fly animation lands item into bottom tray</div>
+        <span class="step-arrow">➔</span>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-box">
+        <div class="step-circle">3</div>
+        <div class="step-icon">📝</div>
+        <div class="step-title">Order Checkout</div>
+        <div class="step-desc">Student reviews cart tray & submits customer details</div>
+        <span class="step-arrow">➔</span>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-box">
+        <div class="step-circle">4</div>
+        <div class="step-icon">⚙️</div>
+        <div class="step-title">FastAPI Engine</div>
+        <div class="step-desc">Backend checks stock & deducts inventory in SQLite</div>
+        <span class="step-arrow">➔</span>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step-box">
+        <div class="step-circle">5</div>
+        <div class="step-icon">📲</div>
+        <div class="step-title">UPI QR Payment</div>
+        <div class="step-desc">Encodes total amount & VPA for instant mobile scan</div>
+        <span class="step-arrow">➔</span>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step-box">
+        <div class="step-circle">6</div>
+        <div class="step-icon">📅</div>
+        <div class="step-title">Bill Generation</div>
+        <div class="step-desc">Renders bill with separate Date & Time records</div>
+        <span class="step-arrow">➔</span>
+      </div>
+
+      <!-- STEP 7 -->
+      <div class="step-box">
+        <div class="step-circle">7</div>
+        <div class="step-icon">🖨️</div>
+        <div class="step-title">Receipt Output</div>
+        <div class="step-desc">Saves .txt bill, updates CSV, and prints receipt</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

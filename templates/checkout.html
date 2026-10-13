@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}?v=8">
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <div>
+            <h1>💳 Checkout & Payment</h1>
+            <p style="color: var(--sage); margin: 4px 0 0 0;">Review your items and confirm your order</p>
+        </div>
+        <a href="/cart" class="btn secondary">⬅ Back to Cart</a>
+    </header>
+
+    <div class="summary">
+        <h3>Order Summary</h3>
+        {% for product in products %}
+        <div class="summary-row">
+            <span>{{ product.name }} × {{ product.quantity }}</span>
+            <span>₹{{ "%.2f"|format(product.amount) }}</span>
+        </div>
+        {% endfor %}
+
+        <div class="summary-row total">
+            <strong>TOTAL TO PAY</strong>
+            <strong>₹{{ "%.2f"|format(total) }}</strong>
+        </div>
+    </div>
+
+    <!-- PAYMENT FORM -->
+    <form method="POST" action="/generate_bill" style="margin-top: 25px;">
+
+        <label>
+            Student / Customer Name:
+        </label>
+        <input
+            type="text"
+            name="customer_name"
+            placeholder="Enter Student Name (e.g. Sathyamoorthy)"
+            required
+            style="margin-bottom: 18px;">
+
+        <label>
+            Select Payment Method:
+        </label>
+        <select 
+            name="payment_method" 
+            id="paymentMethodSelect"
+            onchange="handlePaymentMethodChange()"
+            style="margin-bottom: 18px;">
+            <option value="UPI" selected>UPI (Google Pay / PhonePe / Paytm / BHIM)</option>
+            <option value="Cash">Cash at Counter</option>
+            <option value="College Wallet">College ID / Student Wallet</option>
+            <option value="Card">Debit / Credit Card</option>
+        </select>
+
+        <!-- DYNAMIC UPI QR DISPLAY -->
+        <div id="upiPaymentSection" class="upi-card">
+            <h3>📱 Scan UPI QR to Pay</h3>
+            <p>Scan with any UPI App (GPay, PhonePe, Paytm, BHIM) on your mobile phone</p>
+            <img 
+                src="/upi_qr?amount={{ total }}&bill_no=DEMO" 
+                alt="UPI Payment QR Code" 
+                class="upi-qr-image">
+            <div>
+                <span style="font-weight: 600; color: var(--forest);">UPI ID: </span>
+                <span class="upi-vpa-badge">collegecanteen@okaxis</span>
+            </div>
+            <p style="font-size: 13px; color: var(--forest); margin-top: 10px; font-weight: 600;">
+                Amount: <strong style="color: var(--antique-gold);">₹{{ "%.2f"|format(total) }}</strong> | Fast & Contactless
+            </p>
+        </div>
+
+        <button
+            type="submit"
+            class="btn success"
+            style="width: 100%; padding: 14px; font-size: 16px; margin-top: 15px;">
+            ✅ Confirm Payment & Generate Bill
+        </button>
+
+    </form>
+
+</div>
+
+<script>
+function handlePaymentMethodChange() {
+    const method = document.getElementById("paymentMethodSelect").value;
+    const upiBox = document.getElementById("upiPaymentSection");
+    if (method === "UPI") {
+        upiBox.style.display = "block";
+    } else {
+        upiBox.style.display = "none";
+    }
+}
+// Initialize on page load
+handlePaymentMethodChange();
+</script>
+
+</body>
+</html>

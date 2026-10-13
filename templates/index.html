@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart College Canteen</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}?v=9">
+</head>
+
+<body class="home-page">
+
+<div class="container">
+
+    <!-- TOP-RIGHT CORNER NAVIGATION (OUT OF THE HERO BOX) -->
+    <div class="top-nav-corner">
+        {% if is_admin %}
+            <span class="admin-badge">🔓 Admin Mode Active</span>
+            <a href="/orders" class="btn secondary">📋 Orders</a>
+            <a href="/admin" class="btn dark">⚙ Admin Dashboard</a>
+            <a href="/admin/logout" class="btn secondary" style="background-color: #e09888;" title="End Admin Session">Logout</a>
+        {% else %}
+            <button type="button" onclick="openAdminAuth('/orders', 'Orders History')" class="btn secondary">
+                📋 Orders
+            </button>
+            <button type="button" onclick="openAdminAuth('/admin', 'Admin Dashboard')" class="btn dark">
+                ⚙ Admin Dashboard
+            </button>
+        {% endif %}
+    </div>
+
+    <!-- MAIN CANTEEN HERO BOX -->
+    <div class="hero">
+        <h1>🍽 Smart College Canteen</h1>
+        <p>Digital Billing & Canteen Management System</p>
+
+        <a href="/menu" class="btn" style="padding: 14px 36px; font-size: 17px; margin-top: 10px;">
+            🛒 Start Billing
+        </a>
+    </div>
+
+</div>
+
+<!-- ADMIN PASSWORD MODAL -->
+<div id="adminModalOverlay" class="admin-modal-overlay">
+    <div class="admin-modal-card">
+        <div class="modal-header">
+            <h3>🔐 Admin Access Required</h3>
+            <button type="button" class="modal-close-x" onclick="closeAdminAuth()">&times;</button>
+        </div>
+
+        <p class="modal-subtitle">
+            Enter admin password to access <strong id="authTargetName">Admin Area</strong>:
+        </p>
+
+        <div class="modal-body">
+            <input 
+                type="password" 
+                id="adminPasswordInput" 
+                class="admin-pwd-input" 
+                placeholder="Enter password..."
+                autocomplete="current-password">
+
+            <div id="adminAuthError" class="auth-error-box" style="display: none;"></div>
+
+            <p class="auth-hint">
+                🔑 Hint: default password is <code>admin</code> or <code>admin123</code>
+            </p>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn secondary" onclick="closeAdminAuth()">Cancel</button>
+            <button type="button" class="btn" id="adminSubmitBtn" onclick="submitAdminAuth()">
+                Unlock & Proceed ➔
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+const isAdmin = {{ 'true' if is_admin else 'false' }};
+let targetRedirectUrl = "/admin";
+
+function openAdminAuth(targetUrl, targetName) {
+    if (isAdmin) {
+        window.location.href = targetUrl;
+        return;
+    }
+
+    targetRedirectUrl = targetUrl;
+    document.getElementById("authTargetName").textContent = targetName || "Protected Area";
+    document.getElementById("adminAuthError").style.display = "none";
+    document.getElementById("adminPasswordInput").value = "";
+    
+    const overlay = document.getElementById("adminModalOverlay");
+    overlay.classList.add("active");
+    
+    setTimeout(() => {
+        const input = document.getElementById("adminPasswordInput");
+        input.focus();
+    }, 150);
+}
+
+function closeAdminAuth() {
+    const overlay = document.getElementById("adminModalOverlay");
+    overlay.classList.remove("active");
+    // Clean URL query params if redirected
+    if (window.location.search.includes("auth_required")) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+}
+
+async function submitAdminAuth() {
+    const input = document.getElementById("adminPasswordInput");
+    const errorBox = document.getElementById("adminAuthError");
+    const submitBtn = document.getElementById("adminSubmitBtn");
+    const password = input.value.trim();
+
+    if (!password) {
+        errorBox.textContent = "Please enter the admin password.";
+        errorBox.style.display = "block";
+        input.focus();
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Verifying...";
+    errorBox.style.display = "none";
+
+    try {
+        const response = await fetch("/api/verify_admin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ password: password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            submitBtn.textContent = "Authorized! Redirecting...";
+            window.location.href = targetRedirectUrl;
+        } else {
+            errorBox.textContent = data.message || "Incorrect password. Try again.";
+            errorBox.style.display = "block";
+            input.select();
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Unlock & Proceed ➔";
+        }
+    } catch (err) {
+        console.error(err);
+        errorBox.textContent = "Unable to connect to server. Please try again.";
+        errorBox.style.display = "block";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Unlock & Proceed ➔";
+    }
+}
+
+// Support Enter key inside password input
+document.getElementById("adminPasswordInput").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        submitAdminAuth();
+    } else if (e.key === "Escape") {
+        closeAdminAuth();
+    }
+});
+
+// Close modal when clicking outside of card
+document.getElementById("adminModalOverlay").addEventListener("click", function(e) {
+    if (e.target === this) {
+        closeAdminAuth();
+    }
+});
+
+// Auto-show modal if user was redirected due to route guard
+window.addEventListener("DOMContentLoaded", function() {
+    const params = new URLSearchParams(window.location.search);
+    const authReq = params.get("auth_required");
+    if (authReq) {
+        const targetUrl = authReq === "orders" ? "/orders" : "/admin";
+        const targetName = authReq === "orders" ? "Orders History" : "Admin Dashboard";
+        openAdminAuth(targetUrl, targetName);
+        const err = document.getElementById("adminAuthError");
+        err.textContent = "Please enter admin password to view " + targetName + ".";
+        err.style.display = "block";
+    }
+});
+</script>
+
+</body>
+</html>

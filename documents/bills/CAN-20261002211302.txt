@@ -1,0 +1,20 @@
+============================================================
+               SMART COLLEGE CANTEEN
+             Digital Bill Receipt Document
+============================================================
+Bill No        : CAN-20261002211302
+Date           : 02-10-2026
+Time           : 09:13:02 PM
+Customer Name  : Test Student
+Payment Method : UPI
+Payment Status : PAID
+------------------------------------------------------------
+ITEM NAME                      QTY      PRICE (Rs)   AMOUNT (Rs)
+------------------------------------------------------------
+Chicken Rice                   1        80.00        80.00     
+------------------------------------------------------------
+TOTAL AMOUNT:                                      Rs. 80.00
+============================================================
+         Thank you for ordering at College Canteen!
+             Please keep this receipt document.
+============================================================

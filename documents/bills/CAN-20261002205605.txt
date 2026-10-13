@@ -1,0 +1,19 @@
+============================================================
+               SMART COLLEGE CANTEEN
+             Digital Bill Receipt Document
+============================================================
+Bill No        : CAN-20261002205605
+Date & Time    : 02-10-2026 08:56:05 PM
+Customer Name  : Nivi
+Payment Method : UPI
+Payment Status : PAID
+------------------------------------------------------------
+ITEM NAME                      QTY      PRICE (Rs)   AMOUNT (Rs)
+------------------------------------------------------------
+Sambar Rice                    2        50.00        100.00    
+------------------------------------------------------------
+TOTAL AMOUNT:                                      Rs. 100.00
+============================================================
+         Thank you for ordering at College Canteen!
+             Please keep this receipt document.
+============================================================

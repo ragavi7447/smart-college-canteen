@@ -1,0 +1,19 @@
+============================================================
+               SMART COLLEGE CANTEEN
+             Digital Bill Receipt Document
+============================================================
+Bill No        : CAN-20260927224948
+Date & Time    : 27-09-2026 10:49:48 PM
+Customer Name  : Dharshini
+Payment Method : UPI
+Payment Status : PAID
+------------------------------------------------------------
+ITEM NAME                      QTY      PRICE (Rs)   AMOUNT (Rs)
+------------------------------------------------------------
+tea                            1        15.00        15.00     
+------------------------------------------------------------
+TOTAL AMOUNT:                                      Rs. 15.00
+============================================================
+         Thank you for ordering at College Canteen!
+             Please keep this receipt document.
+============================================================

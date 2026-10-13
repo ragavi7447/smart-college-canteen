@@ -1,0 +1,21 @@
+============================================================
+               SMART COLLEGE CANTEEN
+             Digital Bill Receipt Document
+============================================================
+Bill No        : CAN-20261009145332
+Date           : 09-10-2026
+Time           : 02:53:32 PM
+Customer Name  : pavi
+Payment Method : UPI
+Payment Status : PAID
+------------------------------------------------------------
+ITEM NAME                      QTY      PRICE (Rs)   AMOUNT (Rs)
+------------------------------------------------------------
+Masal Puri                     2        30.00        60.00     
+Pani Puri                      1        30.00        30.00     
+------------------------------------------------------------
+TOTAL AMOUNT:                                      Rs. 90.00
+============================================================
+         Thank you for ordering at College Canteen!
+             Please keep this receipt document.
+============================================================

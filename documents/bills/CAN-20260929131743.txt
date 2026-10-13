@@ -1,0 +1,20 @@
+============================================================
+               SMART COLLEGE CANTEEN
+             Digital Bill Receipt Document
+============================================================
+Bill No        : CAN-20260929131743
+Date & Time    : 29-09-2026 01:17:43 PM
+Customer Name  : vishnu
+Payment Method : UPI
+Payment Status : PAID
+------------------------------------------------------------
+ITEM NAME                      QTY      PRICE (Rs)   AMOUNT (Rs)
+------------------------------------------------------------
+Chilli Chicken                 1        100.00       100.00    
+Parota                         1        20.00        20.00     
+------------------------------------------------------------
+TOTAL AMOUNT:                                      Rs. 120.00
+============================================================
+         Thank you for ordering at College Canteen!
+             Please keep this receipt document.
+============================================================

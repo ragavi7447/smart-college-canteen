@@ -1,0 +1,19 @@
+============================================================
+               SMART COLLEGE CANTEEN
+             Digital Bill Receipt Document
+============================================================
+Bill No        : CAN-20260928130728
+Date & Time    : 28-09-2026 01:07:28 PM
+Customer Name  : priya
+Payment Method : UPI
+Payment Status : PAID
+------------------------------------------------------------
+ITEM NAME                      QTY      PRICE (Rs)   AMOUNT (Rs)
+------------------------------------------------------------
+Parota                         1        20.00        20.00     
+------------------------------------------------------------
+TOTAL AMOUNT:                                      Rs. 20.00
+============================================================
+         Thank you for ordering at College Canteen!
+             Please keep this receipt document.
+============================================================

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Admin Dashboard</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', path='style.css') }}?v=8">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div>
+
+            <h1>⚙️ Admin Dashboard</h1>
+
+            <p style="color: #e5def3; margin: 4px 0 0 0;">Manage your college canteen inventory & orders</p>
+
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <a href="/canteen" class="btn secondary">
+                🏠 Home
+            </a>
+            <a href="/orders" class="btn secondary">
+                📋 Orders
+            </a>
+            <a href="/download_orders_csv" class="btn-doc">
+                📊 Download CSV
+            </a>
+            <a href="/admin/logout" class="btn secondary" style="background-color: #e09888;" title="End Admin Session">
+                🔒 Logout
+            </a>
+        </div>
+
+    </header>
+
+
+    <!-- DASHBOARD STATISTICS -->
+
+    <div class="dashboard">
+
+        <div class="stat">
+
+            <h2>
+                ₹{{ "%.2f"|format(total_sales) }}
+            </h2>
+
+            <p>💰 Total Sales</p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>
+                {{ total_orders }}
+            </h2>
+
+            <p>🧾 Total Orders</p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>
+                {{ products|length }}
+            </h2>
+
+            <p>🍔 Products</p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>
+                {{ products|selectattr("stock", "equalto", 0)|list|length }}
+            </h2>
+
+            <p>⚠️ Out of Stock</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ADD PRODUCT -->
+
+    <h2>➕ Add New Product</h2>
+
+    <form
+        method="POST"
+        action="/admin/add_product"
+        class="admin-form">
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Product name"
+            required>
+
+        <input
+            type="text"
+            name="category"
+            placeholder="Category"
+            required>
+
+        <input
+            type="number"
+            name="price"
+            step="0.01"
+            min="0"
+            placeholder="Price"
+            required>
+
+        <input
+            type="number"
+            name="stock"
+            min="0"
+            placeholder="Stock"
+            required>
+
+        <button
+            type="submit"
+            class="btn success">
+
+            ➕ Add Product
+
+        </button>
+
+    </form>
+
+
+    <!-- INVENTORY -->
+
+    <h2>📦 Inventory Management</h2>
+
+    <div style="margin-bottom: 14px;">
+        <input 
+            type="text" 
+            id="adminInventorySearch" 
+            class="search-input" 
+            placeholder="Search inventory products by name or category..." 
+            oninput="filterInventoryTable()">
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for product in products %}
+
+            <tr>
+
+                <td>
+                    {{ product.id }}
+                </td>
+
+
+                <td>
+                    <strong>
+                        {{ product.name }}
+                    </strong>
+                </td>
+
+
+                <td>
+                    {{ product.category }}
+                </td>
+
+
+                <td>
+                    ₹{{ "%.2f"|format(product.price) }}
+                </td>
+
+
+                <td>
+
+                    <form
+                        method="POST"
+                        action="/admin/update_stock/{{ product.id }}">
+
+                        <input
+                            type="number"
+                            name="stock"
+                            value="{{ product.stock }}"
+                            min="0"
+                            style="width:80px;">
+
+                        <button type="submit">
+                            Update
+                        </button>
+
+                    </form>
+
+                </td>
+
+
+                <td>
+
+                    {% if product.stock > 0 %}
+
+                        <span>
+                            🟢 Available
+                        </span>
+
+                    {% else %}
+
+                        <span>
+                            🔴 Out of Stock
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+
+                <td>
+
+                    <a
+                        href="/admin/delete_product/{{ product.id }}"
+                        class="remove"
+                        onclick="return confirm('Delete this product?');">
+
+                        🗑️ Delete
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% else %}
+
+            <tr>
+
+                <td colspan="7">
+
+                    No products found.
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ADMIN LINKS -->
+
+    <div class="admin-links">
+
+        <a href="/orders" class="btn">
+            🧾 View Orders
+        </a>
+
+        <a href="/menu" class="btn secondary">
+            🍴 View Menu
+        </a>
+
+        <a href="/canteen" class="btn secondary">
+            🏠 Home
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+function filterInventoryTable() {
+    const query = document.getElementById("adminInventorySearch").value.trim().toLowerCase();
+    const rows = document.querySelectorAll(".table-container tbody tr");
+
+    rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        if (text.includes(query)) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+}
+</script>
+
+</body>
+</html>

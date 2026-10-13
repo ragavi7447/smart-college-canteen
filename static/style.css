@@ -1,0 +1,1375 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   TRIAL COLOR PALETTE (Light Gray Background)
+   • App Background:       #D3D3D3 (Light Gray)
+   • Menu cards:           #48426D (Muted Purple-Slate)
+   • Food-item cards:      #FFB996 (Peach / Apricot Coral)
+   • Add to Cart:          #BC96CD (Lavender)
+   • Generate Bill:        #F0C38E (Warm Butterscotch Gold)
+   • Pay Now:              #F0C38E (Warm Butterscotch Gold)
+   • Cancel:               #F1AA9B (Pastel Salmon / Soft Coral)
+   • Card box,Delete item: #F1AA9B (Pastel Salmon / Soft Coral)
+   • Normal text:          #000000 (Black)
+   • Button text:          #312C51 (Deep Violet)
+   • Selected/Highlight:   #F0C38E (Butterscotch Gold)
+   • Borders/Dividers:     #6A6296 (Lighter variation of #48426D)
+   ========================================================================== */
+
+:root {
+    --app-bg: #D3D3D3;
+    --menu-card: #48426D;
+    --food-card: #FFB996;
+    --add-to-cart: #BC96CD;
+    --add-to-cart-hover: #ab83bd;
+    --generate-bill: #F0C38E;
+    --generate-bill-hover: #e0b07a;
+    --pay-now: #F0C38E;
+    --cancel: #F1AA9B;
+    --cancel-hover: #e09888;
+    --card-box: #F1AA9B;
+    --delete-item: #F1AA9B;
+    --normal-text: #000000;
+    --btn-text: #312C51;
+    --highlight: #F0C38E;
+    --border-divider: #6A6296;
+    --border-divider-light: #7E75AC;
+    --white: #FFFFFF;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--app-bg);
+    color: var(--normal-text);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    width: 95%;
+    max-width: 1140px;
+    margin: auto;
+    padding: 24px 16px;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-top: 0;
+}
+
+p, span, label {
+    font-size: 14px;
+}
+
+/* ==========================================================================
+   HEADER & NAVBAR (Menu Card #48426D)
+   ========================================================================== */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    padding: 18px 26px;
+    background-color: var(--menu-card);
+    border-radius: 16px;
+    border: 1.5px solid var(--border-divider);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+}
+
+header h1 {
+    font-size: 26px;
+    margin: 0;
+    color: var(--highlight);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header p {
+    color: #e5def3;
+    margin: 4px 0 0 0;
+    font-weight: 500;
+}
+
+/* =========================================================
+   HERO CARD & HOME SCREEN CUSTOM BACKGROUND (index.html only)
+   ========================================================= */
+
+body.home-page {
+    background: linear-gradient(rgba(18, 14, 28, 0.28), rgba(18, 14, 28, 0.48)), 
+                url('/static/home_bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+}
+
+body.home-page .hero {
+    background-color: rgba(72, 66, 109, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 2px solid rgba(126, 117, 172, 0.75);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+}
+
+body.home-page .top-nav-corner .btn {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.hero {
+    max-width: 620px;
+    margin: 60px auto;
+    padding: 50px 36px;
+    text-align: center;
+    background-color: var(--menu-card);
+    border-radius: 20px;
+    border: 2px solid var(--border-divider);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+}
+
+.hero h1 {
+    font-size: 36px;
+    color: var(--highlight);
+    margin-bottom: 12px;
+}
+
+.hero p {
+    color: #e5def3;
+    font-size: 17px;
+    font-weight: 500;
+    margin-bottom: 32px;
+}
+
+/* ==========================================================================
+   BUTTONS (Button Text: #312C51)
+   ========================================================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+    padding: 12px 22px;
+    margin: 4px;
+    border-radius: 10px;
+    background-color: var(--generate-bill);
+    color: var(--btn-text) !important;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 800;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.btn:hover {
+    background-color: var(--generate-bill-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.26);
+}
+
+/* Add to Cart button (#BC96CD) */
+.btn.add-cart-btn,
+.product-card .btn {
+    background-color: var(--add-to-cart);
+    color: var(--btn-text) !important;
+}
+
+.btn.add-cart-btn:hover,
+.product-card .btn:hover {
+    background-color: var(--add-to-cart-hover);
+}
+
+/* View Cart Navbar Button (#BC96CD) */
+.cart-button {
+    background-color: var(--add-to-cart);
+    color: var(--btn-text) !important;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.cart-button:hover {
+    background-color: var(--add-to-cart-hover);
+    transform: translateY(-2px);
+}
+
+/* Generate Bill / Pay Now Button (#F0C38E) */
+.btn.success {
+    background-color: var(--generate-bill);
+    color: var(--btn-text) !important;
+}
+
+.btn.success:hover {
+    background-color: var(--generate-bill-hover);
+}
+
+/* Cancel / Back / Clear Button (#F1AA9B) */
+.btn.secondary,
+.btn.danger {
+    background-color: var(--cancel);
+    color: var(--btn-text) !important;
+}
+
+.btn.secondary:hover,
+.btn.danger:hover {
+    background-color: var(--cancel-hover);
+}
+
+.btn.dark {
+    background-color: var(--menu-card);
+    color: var(--highlight) !important;
+    border: 1.5px solid var(--border-divider-light);
+}
+
+.btn.dark:hover {
+    background-color: var(--border-divider);
+}
+
+/* ==========================================================================
+   SEARCH BAR & CATEGORY FILTERS (Menu Card #48426D)
+   ========================================================================== */
+
+.search-section {
+    background-color: var(--menu-card);
+    padding: 20px 24px;
+    border-radius: 16px;
+    margin-bottom: 28px;
+    border: 1.5px solid var(--border-divider);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+}
+
+.search-bar-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    font-size: 18px;
+    color: var(--highlight);
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    padding: 13px 18px 13px 46px;
+    font-size: 15px;
+    font-family: inherit;
+    border: 2px solid var(--border-divider);
+    border-radius: 12px;
+    outline: none;
+    transition: all 0.2s ease;
+    background-color: var(--white);
+    color: var(--normal-text);
+}
+
+.search-input:focus {
+    border-color: var(--highlight);
+    box-shadow: 0 0 0 3px rgba(240, 195, 142, 0.35);
+}
+
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.category-filters span {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--highlight);
+    margin-right: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.filter-btn {
+    padding: 8px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 800;
+    font-family: inherit;
+    border: 1.5px solid var(--border-divider-light);
+    background-color: #312C51;
+    color: var(--white);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+    background-color: var(--cancel);
+    color: var(--btn-text);
+    border-color: var(--cancel);
+}
+
+/* Selected item / highlight (#F0C38E) */
+.filter-btn.active {
+    background-color: var(--highlight);
+    color: var(--btn-text);
+    border-color: var(--highlight);
+    box-shadow: 0 3px 10px rgba(240, 195, 142, 0.4);
+}
+
+/* ==========================================================================
+   FOOD-ITEM CARDS (#FFB996)
+   ========================================================================== */
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 22px;
+}
+
+.product-card {
+    background-color: var(--food-card);
+    padding: 24px;
+    border-radius: 16px;
+    border: 1.5px solid var(--border-divider);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+    border-color: #312C51;
+}
+
+/* Food item title (Normal text #000000) */
+.product-card h3 {
+    font-size: 21px;
+    margin-bottom: 6px;
+    color: var(--normal-text);
+}
+
+.category {
+    display: inline-block;
+    color: var(--btn-text);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 12px 0;
+    background: rgba(49, 44, 81, 0.12);
+    padding: 3px 10px;
+    border-radius: 6px;
+}
+
+/* Food item price (Normal text #000000) */
+.product-card h2 {
+    color: var(--normal-text) !important;
+    font-size: 26px;
+    font-weight: 800;
+    margin: 8px 0 12px 0;
+}
+
+.product-card p {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--normal-text);
+    margin: 0 0 14px 0;
+}
+
+.product-card .btn {
+    width: 100%;
+    margin: 0;
+    padding: 12px;
+    background-color: var(--add-to-cart);
+    color: var(--btn-text) !important;
+}
+
+.product-card .btn:hover {
+    background-color: var(--add-to-cart-hover);
+}
+
+.out {
+    color: #842029 !important;
+    font-weight: 800 !important;
+    background: #f8d7da;
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    font-size: 12px !important;
+    text-transform: uppercase;
+}
+
+.empty-menu {
+    text-align: center;
+    padding: 48px 24px;
+    background-color: var(--menu-card);
+    border-radius: 16px;
+    border: 1.5px dashed var(--highlight);
+    color: var(--highlight);
+    grid-column: 1 / -1;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+}
+
+/* ==========================================================================
+   CARD BOX (#F1AA9B) & CART
+   ========================================================================== */
+
+/* Card box (#F1AA9B) */
+.cart-item {
+    background-color: var(--card-box);
+    padding: 20px 24px;
+    margin-bottom: 14px;
+    border-radius: 14px;
+    border: 1.5px solid var(--border-divider);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.cart-item h3 {
+    font-size: 19px;
+    margin: 0 0 4px 0;
+    color: var(--normal-text);
+}
+
+.cart-item p {
+    margin: 0;
+    color: var(--normal-text);
+    font-weight: 700;
+}
+
+.quantity {
+    width: 80px;
+    padding: 8px;
+    text-align: center;
+    font-weight: 800;
+    border-radius: 8px;
+    border: 1.5px solid var(--border-divider);
+    background-color: var(--white);
+    color: var(--normal-text);
+}
+
+/* Cart item amount (#000000) */
+.cart-item strong {
+    color: var(--normal-text) !important;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+/* Delete item (#F1AA9B background / #312C51 pill) */
+.remove {
+    background-color: var(--btn-text);
+    color: var(--delete-item) !important;
+    font-weight: 800;
+    text-decoration: none;
+    font-size: 13px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.remove:hover {
+    background-color: #1a172c;
+    color: var(--white) !important;
+}
+
+/* Total Box (Menu card #48426D) */
+.total-box {
+    background-color: var(--menu-card);
+    padding: 22px 28px;
+    margin: 24px 0;
+    font-size: 26px;
+    font-weight: 800;
+    text-align: right;
+    border-radius: 14px;
+    border: 1.5px solid var(--border-divider);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    color: var(--highlight) !important;
+}
+
+/* ==========================================================================
+   CHECKOUT & SUMMARY (Menu Card #48426D)
+   ========================================================================== */
+
+.summary {
+    background-color: var(--menu-card);
+    padding: 26px 30px;
+    border-radius: 16px;
+    border: 1.5px solid var(--border-divider);
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.summary h3 {
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid var(--border-divider);
+    color: var(--highlight);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 15px;
+    color: #f3effa;
+}
+
+.summary-row span:last-child {
+    color: var(--highlight);
+    font-weight: 800;
+}
+
+.summary-row.total {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--highlight) !important;
+    padding-top: 14px;
+    border-top: 1.5px solid var(--border-divider);
+}
+
+.summary-row.total strong {
+    color: var(--highlight) !important;
+}
+
+label {
+    display: block;
+    font-weight: 800;
+    color: var(--btn-text);
+    margin-top: 18px;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border-divider);
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    background-color: var(--white);
+    color: var(--normal-text);
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--menu-card);
+    box-shadow: 0 0 0 3px rgba(72, 66, 109, 0.3);
+}
+
+/* ==========================================================================
+   UPI QR CODE CARD (Menu Card #48426D with Highlight #F0C38E Border)
+   ========================================================================== */
+
+.upi-card {
+    background-color: var(--menu-card);
+    border: 2px dashed var(--highlight);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 22px 0;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.upi-card h3 {
+    margin: 0 0 6px 0;
+    color: var(--highlight);
+    font-size: 20px;
+}
+
+.upi-card p {
+    margin: 4px 0 14px 0;
+    font-size: 13px;
+    color: #e5def3;
+}
+
+.upi-qr-image {
+    width: 190px;
+    height: 190px;
+    background: var(--white);
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    display: block;
+    margin: 0 auto 14px auto;
+    border: 1.5px solid var(--border-divider);
+}
+
+.upi-vpa-badge {
+    display: inline-block;
+    background: #312C51;
+    color: var(--highlight);
+    font-weight: 800;
+    padding: 6px 16px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border-divider-light);
+    font-family: monospace;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
+   TABLES & ORDER RECORDS (Menu Card #48426D Container)
+   ========================================================================== */
+
+.table-container {
+    overflow-x: auto;
+    margin-bottom: 25px;
+    border-radius: 14px;
+    border: 1.5px solid var(--border-divider);
+    background-color: var(--menu-card);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #312C51;
+    color: var(--highlight);
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 15px 18px;
+    text-align: left;
+    border-bottom: 2px solid var(--border-divider);
+}
+
+td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-divider);
+    color: #f3effa;
+    font-size: 14px;
+}
+
+tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================================================
+   ADMIN DASHBOARD STATS (Menu Card #48426D)
+   ========================================================================== */
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin-bottom: 32px;
+}
+
+.stat {
+    background-color: var(--menu-card);
+    padding: 24px;
+    text-align: center;
+    border-radius: 16px;
+    border: 1.5px solid var(--border-divider);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.stat h2 {
+    color: var(--highlight) !important;
+    font-size: 34px;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.02em;
+}
+
+.stat p {
+    color: #f3effa;
+    font-weight: 700;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* ==========================================================================
+   RECEIPT / BILL THERMAL LAYOUT (#FFFFFF card on #D3D3D3 background)
+   ========================================================================== */
+
+.receipt {
+    max-width: 520px;
+    background: var(--white);
+    margin: 30px auto;
+    padding: 32px 28px;
+    border-radius: 18px;
+    border: 2px solid var(--border-divider-light);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2);
+    color: var(--normal-text);
+}
+
+.receipt h1 {
+    font-size: 24px;
+    color: var(--btn-text);
+    margin-bottom: 4px;
+}
+
+.receipt p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: var(--normal-text);
+}
+
+.receipt hr {
+    border: none;
+    border-top: 1.5px dashed var(--border-divider);
+    margin: 16px 0;
+}
+
+.receipt table th {
+    background-color: var(--btn-text);
+    color: var(--highlight);
+}
+
+.receipt table td {
+    color: var(--normal-text);
+    border-bottom: 1px solid #e0dbe9;
+}
+
+.receipt-total {
+    text-align: right;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--normal-text) !important;
+    margin: 16px 0;
+}
+
+.center {
+    text-align: center;
+}
+
+.paid {
+    display: inline-block;
+    background: rgba(188, 150, 205, 0.25);
+    color: var(--btn-text);
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 800;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+/* ==========================================================================
+   DOCUMENT DOWNLOAD BUTTONS (#BC96CD)
+   ========================================================================== */
+
+.btn-doc {
+    background-color: var(--add-to-cart);
+    color: var(--btn-text) !important;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.btn-doc:hover {
+    background-color: var(--add-to-cart-hover);
+    transform: translateY(-2px);
+}
+
+.btn-doc-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+}
+
+/* ==========================================================================
+   TOP-RIGHT NAVIGATION CORNER & ADMIN BADGE (index.html)
+   ========================================================================== */
+
+.top-nav-corner {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.admin-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--generate-bill);
+    color: var(--btn-text);
+    font-size: 13px;
+    font-weight: 800;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border-divider);
+}
+
+/* ==========================================================================
+   ADMIN AUTHENTICATION MODAL (index.html)
+   ========================================================================== */
+
+.admin-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(18, 15, 33, 0.72);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.admin-modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.admin-modal-card {
+    background-color: var(--menu-card);
+    border: 2px solid var(--border-divider);
+    border-radius: 20px;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+    width: 92%;
+    max-width: 440px;
+    padding: 28px 24px;
+    color: var(--white);
+    transform: scale(0.92) translateY(12px);
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.admin-modal-overlay.active .admin-modal-card {
+    transform: scale(1) translateY(0);
+}
+
+.admin-modal-card .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.admin-modal-card .modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--highlight);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-modal-card .modal-close-x {
+    background: transparent;
+    border: none;
+    color: #cfc8e6;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 4px;
+    transition: color 0.2s;
+}
+
+.admin-modal-card .modal-close-x:hover {
+    color: var(--highlight);
+}
+
+.admin-modal-card .modal-subtitle {
+    color: #e5def3;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.admin-modal-card .modal-subtitle strong {
+    color: var(--highlight);
+}
+
+.admin-pwd-input {
+    width: 100%;
+    padding: 13px 16px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 2px solid var(--border-divider);
+    background: #FFFFFF;
+    color: #000000;
+    outline: none;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.admin-pwd-input:focus {
+    border-color: var(--highlight);
+    box-shadow: 0 0 0 3px rgba(240, 195, 142, 0.35);
+}
+
+.auth-error-box {
+    margin-top: 12px;
+    background-color: #fce8e6;
+    color: #b3261e;
+    border: 1.5px solid #f1aa9b;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.auth-hint {
+    margin-top: 14px;
+    margin-bottom: 0;
+    font-size: 12px;
+    color: #c9c2e0;
+}
+
+.auth-hint code {
+    background: #312C51;
+    color: var(--highlight);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 13px;
+}
+
+.admin-modal-card .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+/* ==========================================================================
+   MENU PAGE & BOTTOM CART DOCKED BAR (menu.html)
+   ========================================================================== */
+
+.menu-page-container {
+    padding-bottom: 120px; /* Leave space so bottom products are never obscured */
+}
+
+.bottom-cart-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background-color: rgba(72, 66, 109, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 2px solid var(--border-divider);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.25);
+    padding: 14px 20px;
+    transition: box-shadow 0.3s ease;
+}
+
+.bottom-cart-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.bottom-cart-tray-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.bottom-cart-bubble {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #312C51;
+    border: 2px solid var(--border-divider-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transform-origin: center;
+    transition: transform 0.2s ease;
+}
+
+.bottom-cart-count-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--food-card);
+    color: #312C51;
+    font-size: 12px;
+    font-weight: 800;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid #312C51;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.bottom-cart-heading {
+    display: block;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--highlight);
+    line-height: 1.2;
+}
+
+.bottom-cart-subtext {
+    display: block;
+    font-size: 13px;
+    color: #e5def3;
+    font-weight: 600;
+}
+
+.bottom-cart-action-btn {
+    background-color: var(--generate-bill);
+    color: var(--btn-text) !important;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 800;
+    border-radius: 12px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.bottom-cart-action-btn:hover {
+    background-color: var(--generate-bill-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+}
+
+.cart-arrow {
+    font-size: 16px;
+    transition: transform 0.2s ease;
+}
+
+.bottom-cart-action-btn:hover .cart-arrow {
+    transform: translateX(4px);
+}
+
+/* ==========================================================================
+   POP-UP & FLY-TO-CART ANIMATIONS
+   ========================================================================== */
+
+/* 1. Product card pop up */
+.product-card.card-popping {
+    animation: cardPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes cardPop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05) translateY(-8px);
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
+        border-color: var(--highlight);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* 2. Flying clone item (Pops up, then flies down into cart) */
+.flying-item-clone {
+    position: fixed;
+    z-index: 10001;
+    pointer-events: none;
+    border-radius: 24px;
+    padding: 8px 16px;
+    background-color: var(--food-card);
+    color: #312C51;
+    border: 2px solid #312C51;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    font-weight: 800;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    will-change: transform, left, top, opacity;
+    transform: scale(0.6);
+    opacity: 0;
+}
+
+.flying-item-clone.pop-up {
+    transform: scale(1.22) translateY(-32px);
+    opacity: 1;
+    transition: transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.3), opacity 0.18s ease;
+}
+
+.flying-item-clone.flying-down {
+    transform: scale(0.3) rotate(16deg);
+    opacity: 0.65;
+    transition: all 0.55s cubic-bezier(0.2, 0.8, 0.25, 1);
+}
+
+/* 3. Cart bump and badge bounce when item arrives */
+.cart-bump {
+    animation: cartBump 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.35) !important;
+}
+
+@keyframes cartBump {
+    0% {
+        transform: scale(1);
+    }
+    40% {
+        transform: scale(1.3) rotate(-8deg);
+    }
+    70% {
+        transform: scale(0.92) rotate(4deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.badge-bump {
+    animation: badgeBump 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.4);
+}
+
+@keyframes badgeBump {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+        background-color: var(--generate-bill);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bottom-cart-bar.bar-pulse {
+    animation: barPulse 0.45s ease;
+}
+
+@keyframes barPulse {
+    0% {
+        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.25);
+    }
+    50% {
+        box-shadow: 0 -12px 32px rgba(240, 195, 142, 0.55);
+    }
+    100% {
+        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.25);
+    }
+}
+
+.card-shake {
+    animation: cardShake 0.45s ease;
+}
+
+@keyframes cardShake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    20%, 60% {
+        transform: translateX(-7px);
+    }
+    40%, 80% {
+        transform: translateX(7px);
+    }
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATIONS
+   ========================================================================== */
+
+.toast-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 10002;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast-pill {
+    pointer-events: auto;
+    background-color: var(--menu-card);
+    color: #FFFFFF;
+    border: 1.5px solid var(--border-divider-light);
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.toast-pill.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast-pill.success {
+    border-left: 5px solid var(--highlight);
+}
+
+.toast-pill.warning {
+    border-left: 5px solid #f1aa9b;
+}
+
+.toast-pill.error {
+    border-left: 5px solid #b3261e;
+}
+
+/* ==========================================================================
+   BILL META BOX (bill.html - Date and Time details)
+   ========================================================================== */
+
+.bill-meta-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+    margin: 14px 0;
+    text-align: left;
+}
+
+.bill-meta-box p {
+    margin: 0;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed #ddd;
+}
+
+.bill-meta-box p strong {
+    color: #333;
+}
+
+.bill-meta-box p span {
+    font-weight: 700;
+    color: #111;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN & PRINT
+   ========================================================================== */
+
+@media(max-width: 600px) {
+    .container {
+        padding: 12px;
+    }
+
+    .top-nav-corner {
+        justify-content: center;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .hero {
+        margin: 20px auto;
+        padding: 30px 18px;
+    }
+
+    .hero h1 {
+        font-size: 28px;
+    }
+
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .receipt {
+        margin: 10px;
+        padding: 20px;
+    }
+
+    .bill-meta-box {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .bottom-cart-bar {
+        padding: 10px 14px;
+    }
+
+    .bottom-cart-action-btn {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+
+    .bottom-cart-heading {
+        font-size: 14px;
+    }
+}
+
+@media print {
+    body {
+        background: white;
+    }
+
+    .receipt {
+        box-shadow: none;
+        width: 100%;
+        margin: 0;
+        max-width: 100%;
+        border: none;
+    }
+
+    .no-print,
+    .bottom-cart-bar,
+    .toast-container {
+        display: none !important;
+    }
+}
